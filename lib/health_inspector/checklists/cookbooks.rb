@@ -43,8 +43,10 @@ module HealthInspector
                 path = cookbook_path.join("#{manifest_record["path"]}")
 
                 if path.exist?
-                  checksum = checksum_cookbook_file(path)
-                  messages << "#{manifest_record['path']}" if checksum != manifest_record['checksum']
+                  if path.basename.to_s != '.git'
+                    checksum = checksum_cookbook_file(path)
+                    messages << "#{manifest_record['path']}" if checksum != manifest_record['checksum']
+                  end
                 else
                   messages << "#{manifest_record['path']} does not exist in the repo"
                 end
